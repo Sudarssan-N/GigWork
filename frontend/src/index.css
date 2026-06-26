@@ -1,0 +1,91 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #1a2332;
+  --color-ink-muted: #4a5568;
+  --color-mist: #e8edf2;
+  --color-paper: #f4f6f8;
+  --color-surface: #ffffff;
+  --color-teal: #0d7c8c;
+  --color-teal-dark: #0a6370;
+  --color-teal-light: #e6f4f6;
+  --color-saffron: #e8953a;
+  --color-saffron-light: #fdf0e0;
+  --color-cement: #8b95a5;
+  --color-verified: #2d6a4f;
+  --color-border: #d8dee6;
+
+  /* Legacy aliases — maps old brand-* classes to new palette */
+  --color-brand-50: #e6f4f6;
+  --color-brand-100: #e6f4f6;
+  --color-brand-500: #0d7c8c;
+  --color-brand-600: #0d7c8c;
+  --color-brand-700: #0a6370;
+  --color-brand-900: #1a2332;
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "DM Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+}
+
+body {
+  font-family: var(--font-body);
+  @apply bg-paper text-ink antialiased;
+}
+
+h1, h2, h3, .font-display {
+  font-family: var(--font-display);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Signature: neighbourhood radius rings */
+.local-radius {
+  background-image:
+    radial-gradient(circle at 50% 50%, transparent 0%, transparent 38%, color-mix(in srgb, var(--color-teal) 8%, transparent) 38.5%, transparent 39%),
+    radial-gradient(circle at 50% 50%, transparent 0%, transparent 58%, color-mix(in srgb, var(--color-teal) 6%, transparent) 58.5%, transparent 59%),
+    radial-gradient(circle at 50% 50%, transparent 0%, transparent 78%, color-mix(in srgb, var(--color-teal) 4%, transparent) 78.5%, transparent 79%);
+}
+
+@keyframes board-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes board-fade-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-board-float {
+  animation: board-float 5s ease-in-out infinite;
+}
+
+.animate-board-fade-in {
+  animation: board-fade-in 0.7s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-board-float,
+  .animate-board-fade-in {
+    animation: none;
+  }
+}
+
+.leaflet-container {
+  z-index: 0;
+  font-family: inherit;
+  border-radius: var(--radius-xl);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-teal);
+  outline-offset: 2px;
+}
