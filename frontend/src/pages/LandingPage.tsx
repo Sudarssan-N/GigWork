@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import {
   ArrowRight, Sparkles, Truck, ChefHat, Home, ShoppingBag,
-  Shield, Clock, IndianRupee, Star, PawPrint, Flower, PartyPopper,
+  Zap, Star, PawPrint, Flower, PartyPopper, Flame,
 } from 'lucide-react'
 import { api } from '@/lib/api'
 import { useAuth } from '@/hooks/useAuth'
@@ -23,17 +23,24 @@ const iconMap: Record<string, React.ElementType> = {
   'event-help': PartyPopper,
 }
 
+const CATEGORY_COLORS = [
+  'from-pink-light to-violet-light border-pink/30',
+  'from-cyan-light to-violet-light border-cyan/30',
+  'from-violet-light to-pink-light border-violet/30',
+  'from-lime/30 to-cyan-light border-lime/40',
+]
+
 const STATS = [
-  { value: '10,842', label: 'tasks completed' },
-  { value: '5,200', label: 'verified workers' },
-  { value: '52', label: 'cities' },
-  { value: '4.8★', label: 'average rating' },
+  { value: '10K+', label: 'gigs done', color: 'text-pink' },
+  { value: '₹15k', label: 'avg monthly hustle', color: 'text-lime' },
+  { value: '52', label: 'cities', color: 'text-cyan' },
+  { value: '4.8★', label: 'vibes', color: 'text-orange' },
 ]
 
 const TESTIMONIALS = [
-  { name: 'Priya S.', city: 'Mumbai', text: 'Found someone for deep cleaning in two hours. Posted, picked a quote, paid by UPI.', role: 'Posted a task' },
-  { name: 'Rahul K.', city: 'Bangalore', text: 'Weekend moving gigs pay ₹12–15k a month. I choose what fits my schedule.', role: 'Works gigs' },
-  { name: 'Anita M.', city: 'Delhi', text: 'Kitchen help before a dinner party — booked, tracked, done. No chasing anyone.', role: 'Posted a task' },
+  { name: 'Priya', city: 'Mumbai', text: 'posted a cleaning gig at 2pm, someone showed up by 4. literally that easy.', tag: 'posted' },
+  { name: 'Rahul', city: 'Bangalore', text: 'weekend moving gigs = ₹12-15k extra. no boss, just me and my schedule.', tag: 'hustling' },
+  { name: 'Anita', city: 'Delhi', text: 'needed kitchen help before a party. booked, paid UPI, done. zero stress.', tag: 'posted' },
 ]
 
 export function LandingPage() {
@@ -47,89 +54,89 @@ export function LandingPage() {
   return (
     <div>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-mist">
-        <div className="local-radius absolute inset-0 opacity-60" aria-hidden />
-        <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-4 py-16 lg:grid-cols-2 lg:py-24">
+      <section className="relative overflow-hidden bg-mesh">
+        <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-4 py-14 lg:grid-cols-2 lg:py-20">
           <div>
-            <p className="font-mono text-xs uppercase tracking-widest text-teal">
-              Neighbourhood marketplace · India
-            </p>
-            <h1 className="mt-4 text-4xl font-semibold leading-[1.1] tracking-tight text-ink sm:text-5xl lg:text-[3.25rem]">
-              Small jobs,
+            <div className="flex flex-wrap gap-2">
+              <span className="sticker sticker-lime">🔥 side hustle era</span>
+              <span className="sticker sticker-pink">India</span>
+            </div>
+            <h1 className="mt-5 font-display text-5xl font-extrabold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
+              Hustle
               <br />
-              <span className="text-teal">done nearby.</span>
+              <span className="gradient-text">local.</span>
+              <br />
+              Get paid.
             </h1>
-            <p className="mt-5 max-w-md text-base leading-relaxed text-ink-muted">
-              Cleaning, moving, cooking, errands — post what you need or pick up gigs
-              in your area. One account does both. Pay by UPI when work is done.
+            <p className="mt-5 max-w-md text-base font-medium leading-relaxed text-ink-muted">
+              Post gigs when you need help. Pick up random tasks when you want extra cash.
+              One account, zero corporate nonsense. UPI when it's done.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               {session ? (
                 profile?.role === 'admin' ? (
-                  <Link to="/admin"><Button size="lg">Open admin</Button></Link>
+                  <Link to="/admin"><Button size="lg">Admin</Button></Link>
                 ) : (
-                  <Link to="/tasks"><Button size="lg">Explore tasks</Button></Link>
+                  <Link to="/tasks"><Button size="lg">Find gigs <ArrowRight className="ml-2 h-5 w-5" /></Button></Link>
                 )
               ) : (
                 <>
                   <Link to="/login?mode=signup">
-                    <Button size="lg">Post a task</Button>
+                    <Button size="lg">Post a gig</Button>
                   </Link>
                   <Link to="/login?mode=signup">
-                    <Button size="lg" variant="saffron">Start earning</Button>
+                    <Button size="lg" variant="lime">Start hustling <Zap className="ml-2 h-5 w-5" /></Button>
                   </Link>
                 </>
               )}
             </div>
-            <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-ink-muted">
-              <li className="flex items-center gap-2">
-                <Shield className="h-4 w-4 text-verified" /> ID-verified workers
-              </li>
-              <li className="flex items-center gap-2">
-                <IndianRupee className="h-4 w-4 text-teal" /> UPI checkout
-              </li>
-              <li className="flex items-center gap-2">
-                <Clock className="h-4 w-4 text-teal" /> Same-day bookings
-              </li>
-            </ul>
+            <div className="mt-8 flex flex-wrap gap-2">
+              <span className="sticker sticker-violet">✓ verified</span>
+              <span className="sticker sticker-cyan">UPI pay</span>
+              <span className="sticker sticker-pink">same-day</span>
+            </div>
           </div>
           <NeighbourhoodBoard categories={categories} />
         </div>
       </section>
 
       {/* Stats */}
-      <section className="border-y border-border bg-surface py-8">
-        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-4 md:grid-cols-4">
+      <section className="border-y-2 border-border bg-surface py-8">
+        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-4 px-4 md:grid-cols-4">
           {STATS.map((s) => (
-            <div key={s.label} className="text-center md:text-left">
-              <p className="font-mono text-2xl font-medium text-ink">{s.value}</p>
-              <p className="mt-1 text-sm text-cement">{s.label}</p>
+            <div key={s.label} className="rounded-2xl bg-mist/60 p-4 text-center md:text-left">
+              <p className={`font-display text-3xl font-extrabold ${s.color}`}>{s.value}</p>
+              <p className="mt-1 text-sm font-medium text-muted">{s.label}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* Categories */}
-      <section className="mx-auto max-w-6xl px-4 py-20">
-        <div className="mb-10 max-w-lg">
-          <h2 className="text-3xl font-semibold text-ink">What people hire for</h2>
-          <p className="mt-3 text-ink-muted">
-            Real categories from your city — cleaning, moving, cooking, and more.
+      <section className="mx-auto max-w-6xl px-4 py-16">
+        <div className="mb-8">
+          <span className="sticker sticker-pink">what's poppin'</span>
+          <h2 className="mt-4 font-display text-4xl font-extrabold text-ink">
+            Pick your vibe
+          </h2>
+          <p className="mt-2 font-medium text-ink-muted">
+            Cleaning, moving, cooking, errands — whatever you need or wanna do.
           </p>
         </div>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {categories.map((cat) => {
+          {categories.map((cat, i) => {
             const Icon = iconMap[cat.icon || ''] || Sparkles
+            const color = CATEGORY_COLORS[i % CATEGORY_COLORS.length]
             return (
               <Card
                 key={cat.id}
-                className="group cursor-pointer border-border/80 transition-all hover:border-teal/30 hover:shadow-md"
+                className={`group cursor-pointer border-2 bg-gradient-to-br transition-all hover:-translate-y-1 hover:shadow-lg hover:shadow-violet/15 ${color}`}
               >
                 <div className="flex items-center gap-3">
-                  <div className="rounded-lg bg-teal-light p-2.5 transition-colors group-hover:bg-teal/10">
-                    <Icon className="h-5 w-5 text-teal" />
+                  <div className="rounded-xl bg-surface p-2.5 shadow-sm transition-transform group-hover:scale-110">
+                    <Icon className="h-6 w-6 text-violet" />
                   </div>
-                  <span className="font-medium text-ink">{cat.name}</span>
+                  <span className="font-bold text-ink">{cat.name}</span>
                 </div>
               </Card>
             )
@@ -137,83 +144,86 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* Dual path */}
-      <section className="bg-ink py-20 text-white">
+      {/* Dual hustle */}
+      <section className="bg-ink py-16 text-white">
         <div className="mx-auto max-w-6xl px-4">
-          <h2 className="font-display text-3xl font-semibold">Two sides, one platform</h2>
-          <p className="mt-3 max-w-xl text-white/70">
-            Need help or want extra income — same account, same neighbourhood radius.
+          <h2 className="font-display text-4xl font-extrabold">
+            Two ways to <span className="text-lime">win</span>
+          </h2>
+          <p className="mt-3 max-w-lg font-medium text-white/60">
+            Need help or need cash? Same app. No switching accounts like it's 2010.
           </p>
-          <div className="mt-10 grid gap-6 md:grid-cols-2">
-            <div className="rounded-xl border border-white/10 bg-white/5 p-8 backdrop-blur-sm">
-              <p className="font-mono text-xs uppercase tracking-wider text-teal-light">Post</p>
-              <h3 className="mt-3 text-xl font-semibold">Need something done?</h3>
+          <div className="mt-10 grid gap-5 md:grid-cols-2">
+            <div className="rounded-3xl border-2 border-violet/40 bg-gradient-to-br from-violet/20 to-pink/10 p-8">
+              <span className="sticker sticker-pink">need help</span>
+              <h3 className="mt-4 font-display text-2xl font-bold">Post it, forget it</h3>
               <p className="mt-2 text-sm leading-relaxed text-white/65">
-                Describe the job, set your budget, and receive quotes from workers nearby.
-                Pay only after the work is complete.
+                Drop your gig, set your budget, let local hustlers come to you.
+                Pay UPI only when it's actually done.
               </p>
               <Link to="/login?mode=signup" className="mt-6 inline-block">
-                <Button>Post a task <ArrowRight className="ml-2 h-4 w-4" /></Button>
+                <Button variant="pink">Post a gig <ArrowRight className="ml-2 h-4 w-4" /></Button>
               </Link>
             </div>
-            <div className="rounded-xl border border-saffron/30 bg-saffron/10 p-8">
-              <p className="font-mono text-xs uppercase tracking-wider text-saffron-light">Earn</p>
-              <h3 className="mt-3 text-xl font-semibold">Pick up local gigs?</h3>
+            <div className="rounded-3xl border-2 border-lime/40 bg-gradient-to-br from-lime/15 to-cyan/10 p-8">
+              <span className="sticker sticker-lime text-ink">need cash</span>
+              <h3 className="mt-4 font-display text-2xl font-bold">Stack your bag</h3>
               <p className="mt-2 text-sm leading-relaxed text-white/65">
-                Complete worker onboarding, get verified, and apply to open tasks on your schedule.
-                Payout goes straight to you.
+                Get verified, browse open gigs near you, apply on your own time.
+                Weekend warrior? Evening grinder? You do you.
               </p>
               <Link to="/login?mode=signup" className="mt-6 inline-block">
-                <Button variant="saffron">Start earning <ArrowRight className="ml-2 h-4 w-4" /></Button>
+                <Button variant="lime">Start hustling <Flame className="ml-2 h-4 w-4" /></Button>
               </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* How it works — real sequence */}
-      <section className="py-20">
+      {/* Flow */}
+      <section className="py-16">
         <div className="mx-auto max-w-6xl px-4">
-          <h2 className="text-3xl font-semibold text-ink">From post to payout</h2>
-          <p className="mt-3 text-ink-muted">The full flow, in order.</p>
-          <div className="mt-12 grid gap-0 md:grid-cols-3">
+          <h2 className="font-display text-4xl font-extrabold text-ink">How it goes</h2>
+          <p className="mt-2 font-medium text-ink-muted">Three steps. No MBA required.</p>
+          <div className="mt-10 flex flex-col gap-4 md:flex-row">
             {[
-              { phase: 'Post', title: 'Describe the job', desc: 'Title, location, budget, and when you need it done.' },
-              { phase: 'Match', title: 'Workers apply', desc: 'Local workers send quotes. You pick who fits.' },
-              { phase: 'Pay', title: 'UPI on completion', desc: 'Payment releases after the task is marked done.' },
-            ].map((item, i) => (
-              <div
-                key={item.phase}
-                className={`relative border border-border bg-surface p-8 ${i === 0 ? 'rounded-l-xl md:rounded-r-none' : ''} ${i === 2 ? 'rounded-r-xl md:rounded-l-none' : ''} ${i === 1 ? 'md:-mx-px md:border-x-0' : ''}`}
-              >
-                <span className="font-mono text-xs font-medium uppercase tracking-wider text-teal">
-                  {item.phase}
-                </span>
-                <h3 className="mt-3 font-display text-lg font-semibold">{item.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-ink-muted">{item.desc}</p>
-              </div>
+              { emoji: '📝', title: 'Post your gig', desc: 'What, where, how much, when. Done in 2 mins.', bg: 'bg-pink-light border-pink/30' },
+              { emoji: '🤝', title: 'Someone applies', desc: 'Local hustlers send quotes. You pick your person.', bg: 'bg-violet-light border-violet/30' },
+              { emoji: '💸', title: 'UPI & done', desc: "Pay when the job's finished. Rate them. Repeat.", bg: 'bg-lime/40 border-lime/50' },
+            ].map((item) => (
+              <Card key={item.title} className={`flex-1 border-2 ${item.bg}`}>
+                <span className="text-3xl">{item.emoji}</span>
+                <h3 className="mt-3 font-display text-xl font-bold">{item.title}</h3>
+                <p className="mt-2 text-sm font-medium text-ink-muted">{item.desc}</p>
+              </Card>
             ))}
           </div>
         </div>
       </section>
 
       {/* Testimonials */}
-      <section className="border-t border-border bg-paper py-20">
+      <section className="border-t-2 border-border bg-mesh py-16">
         <div className="mx-auto max-w-6xl px-4">
-          <h2 className="text-3xl font-semibold text-ink">From the neighbourhood</h2>
-          <div className="mt-10 grid gap-5 md:grid-cols-3">
-            {TESTIMONIALS.map((t) => (
-              <Card key={t.name} className="flex flex-col">
-                <div className="mb-4 flex gap-0.5">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-3.5 w-3.5 fill-saffron text-saffron" />
-                  ))}
+          <h2 className="font-display text-4xl font-extrabold text-ink">Real talk</h2>
+          <div className="mt-8 grid gap-4 md:grid-cols-3">
+            {TESTIMONIALS.map((t, i) => (
+              <Card
+                key={t.name}
+                className={`border-2 ${i === 1 ? 'border-lime/50 bg-lime/10' : 'border-pink/30 bg-pink-light/30'}`}
+              >
+                <div className="mb-3 flex items-center justify-between">
+                  <span className={`sticker ${t.tag === 'hustling' ? 'sticker-lime text-ink' : 'sticker-pink'}`}>
+                    {t.tag}
+                  </span>
+                  <div className="flex gap-0.5">
+                    {[...Array(5)].map((_, j) => (
+                      <Star key={j} className="h-3.5 w-3.5 fill-orange text-orange" />
+                    ))}
+                  </div>
                 </div>
-                <p className="flex-1 text-sm leading-relaxed text-ink-muted">"{t.text}"</p>
-                <div className="mt-5 border-t border-border pt-4">
-                  <p className="font-medium text-ink">{t.name}</p>
-                  <p className="font-mono text-xs text-cement">{t.role} · {t.city}</p>
-                </div>
+                <p className="text-sm font-medium leading-relaxed text-ink">"{t.text}"</p>
+                <p className="mt-4 font-bold text-ink">{t.name}</p>
+                <p className="text-xs font-medium text-muted">{t.city}</p>
               </Card>
             ))}
           </div>
@@ -221,11 +231,11 @@ export function LandingPage() {
       </section>
 
       {!session && (
-        <section className="py-20 text-center">
-          <h2 className="font-display text-3xl font-semibold text-ink">Ready to start?</h2>
-          <p className="mt-3 text-ink-muted">Create one account to post tasks and find work.</p>
+        <section className="py-16 text-center">
+          <h2 className="font-display text-4xl font-extrabold gradient-text">You in?</h2>
+          <p className="mt-3 font-medium text-ink-muted">Free account. Post gigs. Pick up gigs. Stack the bag.</p>
           <div className="mt-8 flex justify-center gap-3">
-            <Link to="/login?mode=signup"><Button size="lg">Create account</Button></Link>
+            <Link to="/login?mode=signup"><Button size="lg" className="animate-pulse-glow">Let's go</Button></Link>
             <Link to="/login"><Button size="lg" variant="outline">Sign in</Button></Link>
           </div>
         </section>

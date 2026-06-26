@@ -1,36 +1,43 @@
 @import "tailwindcss";
 
 @theme {
-  --color-ink: #1a2332;
-  --color-ink-muted: #4a5568;
-  --color-mist: #e8edf2;
-  --color-paper: #f4f6f8;
+  --color-ink: #12082a;
+  --color-ink-muted: #5b4d7a;
+  --color-paper: #faf5ff;
   --color-surface: #ffffff;
-  --color-teal: #0d7c8c;
-  --color-teal-dark: #0a6370;
-  --color-teal-light: #e6f4f6;
-  --color-saffron: #e8953a;
-  --color-saffron-light: #fdf0e0;
-  --color-cement: #8b95a5;
-  --color-verified: #2d6a4f;
-  --color-border: #d8dee6;
+  --color-violet: #7c3aed;
+  --color-violet-dark: #5b21b6;
+  --color-violet-light: #ede9fe;
+  --color-pink: #ff2d8b;
+  --color-pink-light: #ffe4f1;
+  --color-lime: #c8ff00;
+  --color-lime-dark: #9acc00;
+  --color-cyan: #22d3ee;
+  --color-cyan-light: #cffafe;
+  --color-orange: #ff6b35;
+  --color-muted: #9b8fb8;
+  --color-border: #e9d5ff;
+  --color-verified: #10b981;
 
-  /* Legacy aliases — maps old brand-* classes to new palette */
-  --color-brand-50: #e6f4f6;
-  --color-brand-100: #e6f4f6;
-  --color-brand-500: #0d7c8c;
-  --color-brand-600: #0d7c8c;
-  --color-brand-700: #0a6370;
-  --color-brand-900: #1a2332;
+  /* Legacy brand-* → new palette */
+  --color-brand-50: #ede9fe;
+  --color-brand-100: #ede9fe;
+  --color-brand-500: #7c3aed;
+  --color-brand-600: #7c3aed;
+  --color-brand-700: #5b21b6;
+  --color-brand-900: #12082a;
 
-  --font-display: "Fraunces", Georgia, serif;
-  --font-body: "DM Sans", system-ui, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  /* Aliases used in components */
+  --color-teal: #7c3aed;
+  --color-teal-dark: #5b21b6;
+  --color-teal-light: #ede9fe;
+  --color-saffron: #ff6b35;
+  --color-saffron-light: #fff0eb;
+  --color-mist: #f3e8ff;
+  --color-cement: #9b8fb8;
 
-  --radius-sm: 0.5rem;
-  --radius-md: 0.75rem;
-  --radius-lg: 1rem;
-  --radius-xl: 1.25rem;
+  --font-display: "Bricolage Grotesque", system-ui, sans-serif;
+  --font-body: "Plus Jakarta Sans", system-ui, sans-serif;
 }
 
 body {
@@ -42,50 +49,72 @@ h1, h2, h3, .font-display {
   font-family: var(--font-display);
 }
 
-.font-mono {
-  font-family: var(--font-mono);
-}
-
-/* Signature: neighbourhood radius rings */
-.local-radius {
+/* Gradient mesh background */
+.bg-mesh {
+  background-color: var(--color-paper);
   background-image:
-    radial-gradient(circle at 50% 50%, transparent 0%, transparent 38%, color-mix(in srgb, var(--color-teal) 8%, transparent) 38.5%, transparent 39%),
-    radial-gradient(circle at 50% 50%, transparent 0%, transparent 58%, color-mix(in srgb, var(--color-teal) 6%, transparent) 58.5%, transparent 59%),
-    radial-gradient(circle at 50% 50%, transparent 0%, transparent 78%, color-mix(in srgb, var(--color-teal) 4%, transparent) 78.5%, transparent 79%);
+    radial-gradient(ellipse 80% 60% at 10% 20%, color-mix(in srgb, var(--color-violet) 18%, transparent), transparent),
+    radial-gradient(ellipse 60% 50% at 90% 10%, color-mix(in srgb, var(--color-pink) 14%, transparent), transparent),
+    radial-gradient(ellipse 50% 40% at 70% 80%, color-mix(in srgb, var(--color-cyan) 12%, transparent), transparent),
+    radial-gradient(ellipse 40% 30% at 20% 90%, color-mix(in srgb, var(--color-lime) 10%, transparent), transparent);
 }
 
-@keyframes board-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
+.gradient-text {
+  background: linear-gradient(135deg, var(--color-violet) 0%, var(--color-pink) 50%, var(--color-orange) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
-@keyframes board-fade-in {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
+.gradient-btn {
+  background: linear-gradient(135deg, var(--color-violet) 0%, var(--color-pink) 100%);
 }
 
-.animate-board-float {
-  animation: board-float 5s ease-in-out infinite;
+.gradient-btn-lime {
+  background: linear-gradient(135deg, var(--color-lime-dark) 0%, var(--color-lime) 100%);
+  color: var(--color-ink);
 }
 
-.animate-board-fade-in {
-  animation: board-fade-in 0.7s ease-out both;
+.sticker {
+  @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-bold shadow-sm;
 }
+
+.sticker-violet { @apply bg-violet-light text-violet; }
+.sticker-pink { @apply bg-pink-light text-pink; }
+.sticker-lime { @apply bg-lime text-ink; }
+.sticker-cyan { @apply bg-cyan-light text-violet-dark; }
+
+@keyframes float-y {
+  0%, 100% { transform: translateY(0) rotate(var(--tilt, 0deg)); }
+  50% { transform: translateY(-8px) rotate(var(--tilt, 0deg)); }
+}
+
+@keyframes pop-in {
+  from { opacity: 0; transform: scale(0.92) translateY(16px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-violet) 40%, transparent); }
+  50% { box-shadow: 0 0 24px 4px color-mix(in srgb, var(--color-pink) 30%, transparent); }
+}
+
+.animate-float { animation: float-y 4s ease-in-out infinite; }
+.animate-pop-in { animation: pop-in 0.5s ease-out both; }
+.animate-pulse-glow { animation: pulse-glow 2.5s ease-in-out infinite; }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-board-float,
-  .animate-board-fade-in {
-    animation: none;
-  }
+  .animate-float, .animate-pop-in, .animate-pulse-glow { animation: none; }
 }
 
 .leaflet-container {
   z-index: 0;
   font-family: inherit;
-  border-radius: var(--radius-xl);
+  border-radius: 1.25rem;
+  border: 2px solid var(--color-border);
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-teal);
+  outline: 2px solid var(--color-violet);
   outline-offset: 2px;
 }

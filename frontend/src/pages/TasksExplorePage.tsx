@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { Map, List, MapPin, Plus } from 'lucide-react'
+import { Map, List, MapPin, Plus, Zap } from 'lucide-react'
 import { api } from '@/lib/api'
 import { useGeolocation } from '@/hooks/useGeolocation'
 import { useAuth } from '@/hooks/useAuth'
@@ -39,54 +39,56 @@ export function TasksExplorePage() {
     <div className="mx-auto max-w-6xl px-4 py-8">
       <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="font-mono text-xs uppercase tracking-wider text-teal">Explore</p>
-          <h1 className="mt-1 font-display text-3xl font-semibold text-ink">Tasks near you</h1>
-          <p className="mt-2 text-sm text-ink-muted">
-            Post your own or apply to open gigs — same account
+          <span className="sticker sticker-lime text-ink">live gigs</span>
+          <h1 className="mt-3 font-display text-4xl font-extrabold text-ink">
+            What's near you
+          </h1>
+          <p className="mt-2 font-medium text-ink-muted">
+            Browse, apply, or post your own — same account
           </p>
         </div>
         <div className="flex gap-2">
           <Link to="/tasks/new">
-            <Button size="sm"><Plus className="mr-1 h-4 w-4" /> Post task</Button>
+            <Button size="sm"><Plus className="mr-1 h-4 w-4" /> Post gig</Button>
           </Link>
           {!profile?.has_worker_profile && (
             <Link to="/worker/onboard">
-              <Button size="sm" variant="outline">Start earning</Button>
+              <Button size="sm" variant="lime"><Zap className="mr-1 h-4 w-4" /> Hustle</Button>
             </Link>
           )}
         </div>
       </div>
 
-      <div className="mb-5 flex flex-wrap items-center gap-3 rounded-xl border border-border bg-surface p-3">
+      <div className="mb-5 flex flex-wrap items-center gap-3 rounded-2xl border-2 border-border bg-surface p-3 shadow-sm">
         <Input
-          placeholder="Filter by city"
+          placeholder="City filter"
           value={city}
           onChange={(e) => setCity(e.target.value)}
-          className="max-w-xs border-0 bg-mist focus:bg-surface"
+          className="max-w-xs border-0 bg-violet-light/60 focus:bg-surface"
         />
         <select
-          className="rounded-lg border border-border bg-mist px-3 py-2 text-sm text-ink outline-none focus:border-teal focus:ring-2 focus:ring-teal/15"
+          className="rounded-xl border-2 border-border bg-violet-light/60 px-3 py-2.5 text-sm font-medium text-ink outline-none focus:border-violet focus:ring-4 focus:ring-violet/15"
           value={categoryId}
           onChange={(e) => setCategoryId(e.target.value)}
         >
-          <option value="">All categories</option>
+          <option value="">All vibes</option>
           {categories.map((c) => (
             <option key={c.id} value={c.id}>{c.name}</option>
           ))}
         </select>
         <Button variant="outline" size="sm" onClick={detect} disabled={geoLoading}>
           <MapPin className="mr-1 h-4 w-4" />
-          {geoLoading ? 'Detecting…' : 'Use my location'}
+          {geoLoading ? 'Locating…' : 'Near me'}
         </Button>
         {location?.city && !city && (
-          <span className="text-sm text-cement">Near {location.city}</span>
+          <span className="sticker sticker-cyan">{location.city}</span>
         )}
-        <div className="ml-auto flex rounded-lg bg-mist p-1">
+        <div className="ml-auto flex rounded-full bg-violet-light p-1">
           <button
             onClick={() => setView('map')}
             className={cn(
-              'rounded-md px-3 py-1.5 text-sm transition-colors',
-              view === 'map' ? 'bg-surface text-ink shadow-sm' : 'text-cement',
+              'rounded-full px-3 py-1.5 text-sm transition-all',
+              view === 'map' ? 'gradient-btn text-white shadow-sm' : 'text-muted',
             )}
             aria-label="Map view"
           >
@@ -95,8 +97,8 @@ export function TasksExplorePage() {
           <button
             onClick={() => setView('list')}
             className={cn(
-              'rounded-md px-3 py-1.5 text-sm transition-colors',
-              view === 'list' ? 'bg-surface text-ink shadow-sm' : 'text-cement',
+              'rounded-full px-3 py-1.5 text-sm transition-all',
+              view === 'list' ? 'gradient-btn text-white shadow-sm' : 'text-muted',
             )}
             aria-label="List view"
           >
@@ -106,7 +108,7 @@ export function TasksExplorePage() {
       </div>
 
       {isLoading ? (
-        <p className="text-ink-muted">Loading tasks…</p>
+        <p className="font-medium text-muted">Loading gigs…</p>
       ) : view === 'map' ? (
         <TaskMap
           tasks={tasks}
@@ -114,11 +116,11 @@ export function TasksExplorePage() {
           linkPrefix="/tasks"
         />
       ) : tasks.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-border bg-mist/50 px-6 py-16 text-center">
-          <p className="font-medium text-ink">No open tasks match your filters</p>
-          <p className="mt-2 text-sm text-ink-muted">Try a different city or post one yourself.</p>
+        <div className="rounded-3xl border-2 border-dashed border-violet/30 bg-violet-light/40 px-6 py-16 text-center">
+          <p className="font-display text-xl font-bold text-ink">Nothing here yet</p>
+          <p className="mt-2 font-medium text-ink-muted">Try another city or be first — post a gig.</p>
           <Link to="/tasks/new" className="mt-6 inline-block">
-            <Button>Post a task</Button>
+            <Button>Post a gig</Button>
           </Link>
         </div>
       ) : (
